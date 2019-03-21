@@ -80,10 +80,13 @@ function isNightOrDay(res){
       data = chunk;
       var myObj = JSON.parse(data);
       var sunrise = myObj.daily.data[0].sunriseTime;
-      console.log(sunrise);
       var sunset = myObj.daily.data[0].sunsetTime;
-      console.log(sunset);
-      res.end("sunrise : " + sunrise);
+      if(Date.now() / 1000 < sunrise)
+        res.end("Sun is down, it's too early");
+      else if (Date.now() / 1000 > sunrise && Date.now() / 1000 < sunset)
+        res.end("Sun is up, go outside !");
+      else
+        res.end("Sun is down, too late !");
     });
 
     resp.on('end', () => {
