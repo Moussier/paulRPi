@@ -5,6 +5,7 @@ const LED0 = new Gpio(0, 'out');
 const LED1 = new Gpio(1, 'out');
 const LED2 = new Gpio(2, 'out');
 var isBlinking = false;
+var blinkInterval;
 
 const functions = ["blink", "led0", "led1", "led2"];
 
@@ -16,7 +17,7 @@ http.createServer(function (req, res) {
     res.end("no parameter found, please type url host:port/?function=<func>");
   switch(func){
     case "blink":
-      var blinkInterval = setInterval(blinkLEDs, 250);
+      blinkInterval = setInterval(blinkLEDs, 250);
       setTimeout(endBlink, 5000);
       res.end(func + " blink");
       break;
