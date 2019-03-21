@@ -5,7 +5,7 @@ const Gpio = require('onoff').Gpio;
 const LED0 = new Gpio(2, 'out');
 const LED1 = new Gpio(3, 'out');
 const LED2 = new Gpio(4, 'out');
-const sunAPI = "https://api.darksky.net/forecast/d8fda5740c09cc8f74251a1575d46954/48.8873983,2.2913023?exclude=currently,minutely,hourly,alerts,flags";
+const sunAPI = "https://api.darksky.net/forecast/d8fda5740c09cc8f74251a1575d46954/35.7093983,140.2913023?exclude=currently,minutely,hourly,alerts,flags";
 var blinkInterval;
 var sunriseTime;
 
