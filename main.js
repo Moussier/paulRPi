@@ -1,7 +1,7 @@
 const http = require('http');
 const url = require('url');
 const Gpio = require('onoff').Gpio;
-const LED0 = new Gpio(0, 'out');
+const LED0 = new Gpio(4, 'out');
 const LED1 = new Gpio(1, 'out');
 const LED2 = new Gpio(2, 'out');
 var isBlinking = false;
