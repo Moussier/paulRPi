@@ -87,4 +87,5 @@ function isNightOrDay(){
     resp.on("error", (err) => {
       console.log("Error: " + err.message);
     });
+  });
 }
