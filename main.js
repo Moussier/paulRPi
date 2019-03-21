@@ -44,6 +44,7 @@ http.createServer(function (req, res) {
       res.end(func + " led2");
       break;
     case "nightorday":
+      isNightOrDay();
       res.end("test");
       break;
     default:
@@ -78,6 +79,7 @@ function isNightOrDay(){
     resp.on('data', (chunk) => {
       data = chunk;
       console.log(data);
+      return data;
     });
 
     resp.on('end', () => {
