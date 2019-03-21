@@ -45,8 +45,7 @@ http.createServer(function (req, res) {
       res.end(func + " led2");
       break;
     case "nightorday":
-      sunriseTime = isNightOrDay();
-      res.end(sunriseTime);
+      isNightOrDay(res);
       break;
     default:
       res.end(func + " does not exist");
@@ -74,15 +73,17 @@ function endBlink() {
   LED2.writeSync(0);
 }
 
-function isNightOrDay(){
+function isNightOrDay(res){
   https.get(sunAPI, (resp) => {
     var data;
     resp.on('data', (chunk) => {
       data = chunk;
       var myObj = JSON.parse(data);
       var sunrise = myObj.daily.data[0].sunriseTime;
+      console.log(sunrise);
       var sunset = myObj.daily.data[0].sunsetTime;
-      return sunrise;
+      console.log(sunset);
+      res.end("sunrise : " + sunrise);
     });
 
     resp.on('end', () => {
