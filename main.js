@@ -44,7 +44,7 @@ http.createServer(function (req, res) {
       res.end(func + " led2");
       break;
     case "nightorday":
-      res.end(test);
+      res.end("test");
       break;
     default:
       res.end(func + " does not exist");
