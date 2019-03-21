@@ -1,9 +1,9 @@
 const http = require('http');
 const url = require('url');
 const Gpio = require('onoff').Gpio;
-const LED0 = new Gpio(4, 'out');
-const LED1 = new Gpio(1, 'out');
-const LED2 = new Gpio(2, 'out');
+const LED0 = new Gpio(2, 'out');
+const LED1 = new Gpio(3, 'out');
+const LED2 = new Gpio(4, 'out');
 var isBlinking = false;
 var blinkInterval;
 
@@ -17,8 +17,8 @@ http.createServer(function (req, res) {
     res.end("no parameter found, please type url host:port/?function=<func>");
   switch(func){
     case "blink":
-      blinkInterval = setInterval(blinkLEDs, 1000);
-      setTimeout(endBlink, 5000);
+      blinkInterval = setInterval(blinkLEDs, 100);
+      setTimeout(endBlink, 10000);
       res.end(func + " blink");
       break;
     case "led0":
