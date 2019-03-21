@@ -1,6 +1,10 @@
 const http = require('http');
 const url = require('url');
-//const gpio = require('onoff').Gpio;
+const gpio = require('onoff').Gpio;
+const LED0 = new Gpio(0, 'out');
+const LED1 = new Gpio(1, 'out');
+const LED2 = new Gpio(2, 'out');
+var isBlinking = false;
 
 const functions = ["blink", "led0", "led1", "led2"];
 
@@ -13,6 +17,8 @@ http.createServer(function (req, res) {
   switch(func){
     case "blink":
       res.end(func + " blink");
+      var blinkInterval = setInterval(blinkLEDs, 250);
+      setTimeout(endBlink, 5000);
       break;
     case "led0":
       res.end(func + " led0");
@@ -29,3 +35,22 @@ http.createServer(function (req, res) {
   }
 
 }).listen(8080);
+
+function blinkLEDs() {
+  if(LED0.readSync() == 0){
+    LED0.writeSync(1);
+    LED1.writeSync(1);
+    LED2.writeSync(1);
+  }else{
+    LED0.writeSync(0);
+    LED1.writeSync(0);
+    LED2.writeSync(0);
+  }
+}
+
+function endBlink() {
+  clearInterval(blinkInterval);
+  LED0.writeSync(0);
+  LED1.writeSync(0);
+  LED2.writeSync(0);
+}
