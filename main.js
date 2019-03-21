@@ -5,8 +5,9 @@ const Gpio = require('onoff').Gpio;
 const LED0 = new Gpio(2, 'out');
 const LED1 = new Gpio(3, 'out');
 const LED2 = new Gpio(4, 'out');
-const sunAPI = "https://api.sunrise-sunset.org/json?lat=48.8873983&lng=2.2913023";
+const sunAPI = "https://api.darksky.net/forecast/d8fda5740c09cc8f74251a1575d46954/48.8873983,2.2913023?exclude=currently,minutely,hourly,alerts,flags";
 var blinkInterval;
+var sunriseTime;
 
 const functions = ["blink", "led0", "led1", "led2"];
 
@@ -44,8 +45,8 @@ http.createServer(function (req, res) {
       res.end(func + " led2");
       break;
     case "nightorday":
-      isNightOrDay();
-      res.end("test");
+      sunriseTime = isNightOrDay();
+      res.end(sunriseTime);
       break;
     default:
       res.end(func + " does not exist");
@@ -78,8 +79,10 @@ function isNightOrDay(){
     var data;
     resp.on('data', (chunk) => {
       data = chunk;
-      console.log(data);
-      return data;
+      var myObj = JSON.parse(data);
+      var sunrise = myObj.daily.data[0].sunriseTime;
+      var sunset = myObj.daily.data[0].sunsetTime;
+      return sunrise;
     });
 
     resp.on('end', () => {
