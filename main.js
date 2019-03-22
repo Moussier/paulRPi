@@ -23,8 +23,8 @@ http.createServer(function (req, res) {
       setTimeout(endBlink, 10000);
       res.end(func + " blink");
       break;
-    case "led0":
-      if(LED0.readSync() == 0)
+    case "led0": // green led
+      if(LED0.readSync() == 0 && isNightOrDay(null) != 0)
         LED0.writeSync(1);
       else
         LED0.writeSync(0);
@@ -81,12 +81,24 @@ function isNightOrDay(res){
       var myObj = JSON.parse(data);
       var sunrise = myObj.daily.data[0].sunriseTime;
       var sunset = myObj.daily.data[0].sunsetTime;
-      if(Date.now() / 1000 < sunrise)
-        res.end("Sun is down, it's too early");
-      else if (Date.now() / 1000 > sunrise && Date.now() / 1000 < sunset)
-        res.end("Sun is up, go outside !");
-      else
-        res.end("Sun is down, too late !");
+      if(Date.now() / 1000 < sunrise){
+        if(res != null)
+          res.end("Sun is down, it's too early");
+        else
+          return 0; // night
+      }
+      else if (Date.now() / 1000 > sunrise && Date.now() / 1000 < sunset){
+        if(res != null)
+          res.end("Sun is up, go outside !");
+        else
+          return 1; // day
+      }
+      else{
+        if(res != null)
+          res.end("Sun is down, too late !");
+        else
+          return 0; // night
+      }
     });
 
     resp.on('end', () => {
