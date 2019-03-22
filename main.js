@@ -19,7 +19,7 @@ http.createServer(function (req, res) {
     res.end("no parameter found, please type url host:port/?function=<func>");
   switch(func){
     case "blink":
-      blinkInterval = setInterval(blinkLEDs, 100);
+      blinkInterval = setInterval(blinkLEDs, 250);
       setTimeout(endBlink, 10000);
       res.end(func + " blink");
       break;
