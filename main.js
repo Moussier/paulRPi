@@ -56,8 +56,7 @@ http.createServer(function (req, res) {
 
 function blinkLEDs() {
   if(LED0.readSync() == 0){
-    if(dayOrNight == 1)
-      LED0.writeSync(1);
+    LED0.writeSync(1);
     LED1.writeSync(1);
     LED2.writeSync(1);
   }else{
