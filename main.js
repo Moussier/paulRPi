@@ -7,9 +7,9 @@ const LED1 = new Gpio(3, 'out');
 const LED2 = new Gpio(4, 'out');
 const sunAPI = "https://api.darksky.net/forecast/d8fda5740c09cc8f74251a1575d46954/48.8835,2.3219?exclude=currently,minutely,hourly,alerts,flags";
 var blinkInterval;
-var sunriseTime;
+var dayOrNight = 0; //0 night 1 day
 
-const functions = ["blink", "led0", "led1", "led2"];
+isNightOrDay(null);
 
 http.createServer(function (req, res) {
   res.writeHead(200, {'Content-Type': 'text/html'});
@@ -24,7 +24,7 @@ http.createServer(function (req, res) {
       res.end(func + " blink");
       break;
     case "led0": // green led
-      if(LED0.readSync() == 0 && isNightOrDay(null) != 0)
+      if(LED0.readSync() == 0 && dayOrNight != 0)
         LED0.writeSync(1);
       else
         LED0.writeSync(0);
@@ -56,7 +56,8 @@ http.createServer(function (req, res) {
 
 function blinkLEDs() {
   if(LED0.readSync() == 0){
-    LED0.writeSync(1);
+    if(dayOrNight == 1)
+      LED0.writeSync(1);
     LED1.writeSync(1);
     LED2.writeSync(1);
   }else{
@@ -84,20 +85,27 @@ function isNightOrDay(res){
       if(Date.now() / 1000 < sunrise){
         if(res != null)
           res.end("Sun is down, it's too early");
-        else
+        else{
+          dayOrNight = 0;
           return 0; // night
+        }
       }
       else if (Date.now() / 1000 > sunrise && Date.now() / 1000 < sunset){
         if(res != null)
           res.end("Sun is up, go outside !");
-        else
+        else{
+          dayOrNight = 1;
           return 1; // day
+        }
       }
       else{
         if(res != null)
           res.end("Sun is down, too late !");
-        else
+        else{
+          dayOrNight = 0;
           return 0; // night
+        }
+
       }
     });
 
